@@ -106,6 +106,11 @@ try:
                         st.rerun()
                 else:
                     import streamlit.components.v1 as components
+                    import re
+
+                    def clean_for_speech(text):
+                        if not isinstance(text, str): return ""
+                        return re.sub(r'[*_#~\[\]\(\)\<\>\:\;\{\}\|\+\=\-]', ' ', text)
                     
                     row = questions_df.iloc[st.session_state.listen_idx]
                     q_num = st.session_state.listen_idx + 1
@@ -118,11 +123,11 @@ try:
                     if st.session_state.listen_phase == "question":
                         st.warning("⏱️ **음성 재생 중입니다... (10초 대기 후 자동으로 정답이 공개됩니다)**")
                         
-                        safe_q = json.dumps(row['question_text'], ensure_ascii=False)
-                        safe_o1 = json.dumps(row['option_1'], ensure_ascii=False)
-                        safe_o2 = json.dumps(row['option_2'], ensure_ascii=False)
-                        safe_o3 = json.dumps(row['option_3'], ensure_ascii=False)
-                        safe_o4 = json.dumps(row['option_4'], ensure_ascii=False)
+                        safe_q = json.dumps(clean_for_speech(row['question_text']), ensure_ascii=False)
+                        safe_o1 = json.dumps(clean_for_speech(row['option_1']), ensure_ascii=False)
+                        safe_o2 = json.dumps(clean_for_speech(row['option_2']), ensure_ascii=False)
+                        safe_o3 = json.dumps(clean_for_speech(row['option_3']), ensure_ascii=False)
+                        safe_o4 = json.dumps(clean_for_speech(row['option_4']), ensure_ascii=False)
                         
                         js_code = f"""
                         <script>
@@ -152,8 +157,8 @@ try:
                         st.success(f"✅ **정답: {row['correct_answer']}번**")
                         st.info(f"**해설:**\n\n{row['explanation']}")
                         
-                        safe_ans = json.dumps(str(row['correct_answer']), ensure_ascii=False)
-                        safe_exp = json.dumps(row['explanation'], ensure_ascii=False)
+                        safe_ans = json.dumps(clean_for_speech(str(row['correct_answer'])), ensure_ascii=False)
+                        safe_exp = json.dumps(clean_for_speech(row['explanation']), ensure_ascii=False)
                         
                         js_code2 = f"""
                         <script>
