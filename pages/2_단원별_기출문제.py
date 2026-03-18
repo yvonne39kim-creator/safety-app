@@ -85,12 +85,21 @@ try:
                 st.session_state.current_chapter = selected_subject_id
             
             st.markdown("---")
+            
+            # 음성 강제 정지 트리거
+            if st.session_state.get('stop_audio_trigger', False):
+                import streamlit.components.v1 as components
+                components.html("<script>window.speechSynthesis.cancel();</script>", height=0, width=0)
+                st.session_state.stop_audio_trigger = False
+                
             listen_toggle = st.toggle("🎧 **음성 지원 듣기 모드** (1문제씩 10초 간격 자동 진행)", value=st.session_state.listen_mode)
             
             if listen_toggle != st.session_state.listen_mode:
                 st.session_state.listen_mode = listen_toggle
                 st.session_state.listen_idx = 0
                 st.session_state.listen_phase = "question"
+                if not listen_toggle:
+                    st.session_state.stop_audio_trigger = True
                 st.rerun()
 
             if st.session_state.listen_mode:
@@ -148,10 +157,17 @@ try:
                         """
                         components.html(js_code, height=0, width=0)
                         
-                        # 히든 버튼에 가깝지만 유저가 너무 느리다고 느낄때 수동으로 넘길 수 있게 보여줌
-                        if st.button("정답 확인으로 넘어가기 ⏭️ (정답 자동확인)", key="btn_show_ans", use_container_width=True):
-                            st.session_state.listen_phase = "answer"
-                            st.rerun()
+                        # 두 개의 버튼을 가로로 정렬
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            if st.button("⏹️ 재생 정지 및 닫기", key="btn_stop_q", use_container_width=True):
+                                st.session_state.listen_mode = False
+                                st.session_state.stop_audio_trigger = True
+                                st.rerun()
+                        with col2:
+                            if st.button("정답 바로 확인하기 ⏭️ (정답 자동확인)", key="btn_show_ans", type="primary", use_container_width=True):
+                                st.session_state.listen_phase = "answer"
+                                st.rerun()
                             
                     elif st.session_state.listen_phase == "answer":
                         st.success(f"✅ **정답: {row['correct_answer']}번**")
@@ -179,10 +195,17 @@ try:
                         """
                         components.html(js_code2, height=0, width=0)
                         
-                        if st.button("다음 문제로 (다음 문제 자동넘김)", key="btn_next_q", type="primary", use_container_width=True):
-                            st.session_state.listen_idx += 1
-                            st.session_state.listen_phase = "question"
-                            st.rerun()
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            if st.button("⏹️ 재생 정지 및 닫기", key="btn_stop_a", use_container_width=True):
+                                st.session_state.listen_mode = False
+                                st.session_state.stop_audio_trigger = True
+                                st.rerun()
+                        with col2:
+                            if st.button("다음 문제로 ⏭️ (다음 문제 자동넘김)", key="btn_next_q", type="primary", use_container_width=True):
+                                st.session_state.listen_idx += 1
+                                st.session_state.listen_phase = "question"
+                                st.rerun()
             else:
                 # ==========================================
                 # [일반 풀이 모드] 스크롤 리스트 폼

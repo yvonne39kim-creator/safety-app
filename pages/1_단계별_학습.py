@@ -40,32 +40,44 @@ try:
                     st.subheader(chapter_row['chapter_name'])
                     
                     # 🎧 듣기 버튼 추가 (JS Web Speech API 활용)
-                    if st.button(f"🎧 '{chapter_row['chapter_name']}' 핵심 이론 듣기", key=f"listen_btn_{chapter_row['id']}", use_container_width=True):
-                        import json
-                        import re
-                        import streamlit.components.v1 as components
-                        
-                        # 음성 낭독용 특수문자 제거 로직
-                        def clean_for_speech(text):
-                            if not isinstance(text, str): return ""
-                            # 마크다운 및 괄호, 특수기호 제거 (공백으로 치환)
-                            return re.sub(r'[*_#~\[\]\(\)\<\>\:\;\{\}\|\+\=\-]', ' ', text)
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        if st.button(f"🎧 '{chapter_row['chapter_name']}' 듣기 시작", key=f"listen_btn_{chapter_row['id']}", use_container_width=True):
+                            import json
+                            import re
+                            import streamlit.components.v1 as components
                             
-                        clean_desc = clean_for_speech(chapter_row['description'])
-                        safe_desc = json.dumps(clean_desc, ensure_ascii=False)
-                        
-                        js_code = f"""
-                        <script>
-                            window.speechSynthesis.cancel();
-                            const text = {safe_desc};
-                            const u = new SpeechSynthesisUtterance(text);
-                            u.lang = 'ko-KR';
-                            u.rate = 1.0;
-                            window.speechSynthesis.speak(u);
-                        </script>
-                        """
-                        components.html(js_code, height=0, width=0)
-                        st.toast("🔊 특수문자를 제외하고 이론 낭독을 시작합니다.")
+                            # 음성 낭독용 특수문자 제거 로직
+                            def clean_for_speech(text):
+                                if not isinstance(text, str): return ""
+                                # 마크다운 및 괄호, 특수기호 제거 (공백으로 치환)
+                                return re.sub(r'[*_#~\[\]\(\)\<\>\:\;\{\}\|\+\=\-]', ' ', text)
+                                
+                            clean_desc = clean_for_speech(chapter_row['description'])
+                            safe_desc = json.dumps(clean_desc, ensure_ascii=False)
+                            
+                            js_code = f"""
+                            <script>
+                                window.speechSynthesis.cancel();
+                                const text = {safe_desc};
+                                const u = new SpeechSynthesisUtterance(text);
+                                u.lang = 'ko-KR';
+                                u.rate = 1.0;
+                                window.speechSynthesis.speak(u);
+                            </script>
+                            """
+                            components.html(js_code, height=0, width=0)
+                            st.toast("🔊 특수문자를 제외하고 이론 낭독을 시작합니다.")
+                    with col2:
+                        if st.button(f"⏹️ 듣기 정지", key=f"stop_btn_{chapter_row['id']}", use_container_width=True):
+                            import streamlit.components.v1 as components
+                            js_code_stop = f"""
+                            <script>
+                                window.speechSynthesis.cancel();
+                            </script>
+                            """
+                            components.html(js_code_stop, height=0, width=0)
+                            st.toast("🔇 음성 낭독을 정지했습니다.")
                     
                     # 카드 UI 형태로 설명 표시 (HTML 부분과 마크다운 부분을 분리하여 렌더링 오류 방지)
                     st.markdown('<div style="background-color: #f0f2f6; padding: 20px; border-radius: 10px; margin-top: 10px; font-size: 16px;">', unsafe_allow_html=True)
