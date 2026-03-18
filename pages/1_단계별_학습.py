@@ -39,6 +39,25 @@ try:
                     chapter_row = filtered_df.iloc[i]
                     st.subheader(chapter_row['chapter_name'])
                     
+                    # 🎧 듣기 버튼 추가 (JS Web Speech API 활용)
+                    if st.button(f"🎧 '{chapter_row['chapter_name']}' 핵심 이론 듣기", key=f"listen_btn_{chapter_row['id']}", use_container_width=True):
+                        import json
+                        import streamlit.components.v1 as components
+                        
+                        safe_desc = json.dumps(chapter_row['description'], ensure_ascii=False)
+                        js_code = f"""
+                        <script>
+                            window.speechSynthesis.cancel();
+                            const text = {safe_desc};
+                            const u = new SpeechSynthesisUtterance(text);
+                            u.lang = 'ko-KR';
+                            u.rate = 1.0;
+                            window.speechSynthesis.speak(u);
+                        </script>
+                        """
+                        components.html(js_code, height=0, width=0)
+                        st.toast("🔊 이론 낭독을 시작합니다.")
+                    
                     # 카드 UI 형태로 설명 표시 (HTML 부분과 마크다운 부분을 분리하여 렌더링 오류 방지)
                     st.markdown('<div style="background-color: #f0f2f6; padding: 20px; border-radius: 10px; margin-top: 10px; font-size: 16px;">', unsafe_allow_html=True)
                     st.markdown(chapter_row['description'])
