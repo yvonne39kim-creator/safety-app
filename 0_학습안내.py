@@ -162,21 +162,11 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 def main():
-    st.title("나의 학습 대시보드")
-    st.markdown("""
-    산업안전기사 자격증 취득을 위한 완벽한 동반자입니다.  
-    현재 누적된 **나의 학습 성과**를 한눈에 확인하고, 체계적으로 실력을 향상시키세요.
-    """)    
-    
-    st.markdown("<br/>", unsafe_allow_html=True)
-    
     # 대시보드 렌더링 시작
     try:
         history_df, subject_df = db_manager.get_exam_history_stats()
         
         if history_df.empty:
-            st.info("👋 환영합니다! 아직 학습 기록이 없습니다. 왼쪽 메뉴를 통해 첫 학습이나 시험을 시작해 보세요.")
-            
             # --- 프리미엄 세련된 앱 활용 가이드 UI ---
             st.markdown("""
             <div class="guide-container">
