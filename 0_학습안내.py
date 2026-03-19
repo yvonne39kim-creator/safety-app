@@ -101,10 +101,10 @@ st.markdown("""
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
 
-    /* 새로 도입할 가이드 카드 레이아웃 */
+    /* 새로 도입할 가이드 카드 레이아웃 (바둑판 배치 2x2) */
     .guide-container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
         gap: 24px;
         margin-top: 30px;
         margin-bottom: 40px;
@@ -112,11 +112,15 @@ st.markdown("""
     .guide-card {
         background: #FFFFFF;
         border-radius: 16px;
-        padding: 30px 24px;
+        padding: 40px 30px;
         border: 1px solid #E2E8F0;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        text-align: left;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
     .guide-card:hover {
         transform: translateY(-6px);
