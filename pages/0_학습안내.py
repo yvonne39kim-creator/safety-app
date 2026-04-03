@@ -20,175 +20,174 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for Premium Minimalist Design
+# Custom CSS for Premium Minimalist Design (Card Gorilla Style)
 st.markdown("""
 <style>
-    /* 세련된 미니멀리즘 배경 */
+    /* 세련된 폰트 및 배경 */
     .stApp {
-        background-color: #F8FAFC !important;
-        font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+        background-color: #F8F9FA !important;
+        font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
     }
     
-    /* 사이드바 최상단 기존 'app' 메뉴 숨기기 */
-    div[data-testid="stSidebarNav"] li:first-child {
-        display: none !important;
-    }
+    /* 사이드바 보정 */
+    div[data-testid="stSidebarNav"] li:first-child { display: none !important; }
     
-    /* 타이틀 및 헤더 */
-    h1 {
-        color: #0F172A;
+    /* 화면 타이틀 숨기거나 스타일링 (Streamlit 기본 렌더링 요소 제어) */
+    h1 { color: #111; font-weight: 800; letter-spacing: -1px; margin-bottom: 2rem; }
+    
+    /* 카드고릴라 섹션 타이틀 */
+    .section-title {
+        font-size: 1.6rem;
         font-weight: 800;
+        color: #111;
+        margin-bottom: 16px;
         letter-spacing: -0.5px;
-        margin-bottom: 0.5rem;
-    }
-    h2, h3, h4 {
-        color: #1E293B;
-        font-weight: 700;
-        letter-spacing: -0.3px;
-    }
-    
-    /* 대안적인 p 구문 색상 조정 */
-    p {
-        color: #475569;
-        font-size: 1.05rem;
-        line-height: 1.6;
-    }
-    
-    /* 대시보드 메트릭 박스 (클린, 애플 스타일 섀도우) */
-    [data-testid="stMetricValue"] {
-        font-size: 2.4rem;
-        color: #0F172A;
-        font-weight: 800;
-        margin-bottom: -5px;
-    }
-    [data-testid="stMetricLabel"] {
-        font-size: 0.95rem;
-        color: #64748B;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    
-    /* 미니멀 카드 UI */
-    .css-1wivap2, .css-1r6slb0, .css-1n76uvr, .st-emotion-cache-1wivap2, [data-testid="stVerticalBlock"] > div > div { 
-        background: #FFFFFF !important;
-        border-radius: 16px !important;
-        border: 1px solid #E2E8F0 !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
-        padding: 24px !important;
-        margin-bottom: 24px !important;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .css-1wivap2:hover, [data-testid="stVerticalBlock"] > div > div:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04) !important;
     }
 
-    /* 버튼 스타일 조정 (모던 플랫) */
-    .stButton>button {
-        background-color: #1E293B;
-        color: #FFFFFF;
-        border: none;
-        border-radius: 8px;
-        padding: 0.6rem 1.5rem;
-        font-size: 1rem;
-        font-weight: 600;
-        transition: all 0.2s ease;
-    }
-    .stButton>button:hover {
-        background-color: #334155;
-        color: #FFFFFF;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }
-
-    /* 새로 도입할 가이드 카드 레이아웃 (바둑판 배치 2x2) */
-    .guide-container {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 24px;
-        margin-top: 30px;
+    .gorilla-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
         margin-bottom: 40px;
     }
-    .guide-card {
-        background: #FFFFFF;
-        border-radius: 16px;
-        padding: 40px 30px;
-        border: 1px solid #E2E8F0;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        text-align: center;
+
+    /* 공통 카드 스타일 */
+    .gorilla-card {
+        flex: 1;
+        min-width: 240px;
+        border-radius: 20px;
+        padding: 32px 24px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        justify-content: space-between;
+        min-height: 250px;
     }
-    .guide-card:hover {
-        transform: translateY(-6px);
-        border-color: #818CF8;
-        box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.1), 0 10px 10px -5px rgba(99, 102, 241, 0.04);
-    }
-    .guide-icon {
-        font-size: 2.2rem;
-        margin-bottom: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #EEF2FF;
-        color: #4F46E5;
-        width: 64px;
-        height: 64px;
-        border-radius: 14px;
-    }
-    .guide-title {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: #0F172A;
-        margin-bottom: 12px;
-        letter-spacing: -0.3px;
-    }
-    .guide-desc {
-        font-size: 0.95rem;
-        color: #64748B;
-        line-height: 1.6;
-        margin: 0;
+    .gorilla-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.08);
     }
 
-    /* 오류 경고 알림 등 모던하게 */
-    .stAlert {
-        border-radius: 12px !important;
-        border: none !important;
+    /* 카드 솔리드 컬러 (카드고릴라 레퍼런스 톤) */
+    .card-orange { background: #FFC07F; color: #111; }
+    .card-mint   { background: #A3D1C6; color: #111; }
+    .card-green  { background: #CDE2C8; color: #111; }
+    .card-yellow { background: #FDE68A; color: #111; }
+
+    /* 카드 내부 글씨체 */
+    .g-badge {
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    .g-title {
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 4px;
+        line-height: 1.2;
+        color: #333;
+    }
+    .g-subtitle {
+        font-size: 2.2rem;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        margin-bottom: 30px;
+        line-height: 1.1;
+        color: #111;
+    }
+    
+    /* 하단 버튼 스타일 */
+    .g-btn {
+        display: inline-block;
+        background: rgba(255,255,255,0.4);
+        color: #111;
+        padding: 8px 20px;
+        border-radius: 24px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        width: fit-content;
+        transition: background 0.2s;
+        border: none;
+        cursor: pointer;
+    }
+    .g-btn:hover { background: rgba(255,255,255,0.7); }
+
+    /* 카드 우측 하단 큰 아이콘 */
+    .g-bg-icon {
+        position: absolute;
+        right: -10px;
+        bottom: -15px;
+        font-size: 7rem;
+        opacity: 0.2;
+        pointer-events: none;
+    }
+    
+    /* 대안적인 메트릭 박스 커스터마이징 */
+    [data-testid="stMetricValue"] {
+        font-size: 2.5rem !important;
+        font-weight: 800 !important;
+        letter-spacing: -1px;
+    }
+    div[data-testid="metric-container"] {
+        background: #fff;
+        padding: 24px 30px;
+        border-radius: 20px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        border: 1px solid #f1f3f5;
     }
 </style>
 """, unsafe_allow_html=True)
 
 def main():
-    # 대시보드 렌더링 시작
     try:
         history_df, subject_df = db_manager.get_exam_history_stats()
         
         if history_df.empty:
-            # --- 프리미엄 세련된 앱 활용 가이드 UI ---
             st.markdown("""
-            <div class="guide-container">
-                <div class="guide-card">
-                    <div class="guide-icon">📚</div>
-                    <div class="guide-title">1. 단계별 학습</div>
-                    <p class="guide-desc">과목별 필수 핵심 이론을 읽고 요약하며 기초를 탄탄히 다집니다. 처음 시작하는 분들에게 추천합니다.</p>
+            <div class="section-title">학습 가이드차트</div>
+            <div class="gorilla-container">
+                <div class="gorilla-card card-orange">
+                    <div>
+                        <div class="g-badge">🕒 Level 1</div>
+                        <div class="g-title">기초를 탄탄하게</div>
+                        <div class="g-subtitle">단계별 학습</div>
+                        <div class="g-btn">보러가기</div>
+                    </div>
+                    <div class="g-bg-icon">📚</div>
                 </div>
-                <div class="guide-card">
-                    <div class="guide-icon">🎯</div>
-                    <div class="guide-title">2. 단원별 기출문제</div>
-                    <p class="guide-desc">이론을 마친 후 각 세부 단원별로 할당된 문항을 풀이합니다. 오답 해설을 통해 개념을 완벽히 흡수하세요.</p>
+                <div class="gorilla-card card-mint">
+                    <div>
+                        <div class="g-badge">🕒 Level 2</div>
+                        <div class="g-title">개념 완벽 흡수</div>
+                        <div class="g-subtitle">단원별 문제</div>
+                        <div class="g-btn">보러가기</div>
+                    </div>
+                    <div class="g-bg-icon">🎯</div>
                 </div>
-                <div class="guide-card">
-                    <div class="guide-icon">📑</div>
-                    <div class="guide-title">3. 종합 기출문제</div>
-                    <p class="guide-desc">전체 범위에서 다양한 문제들을 랜덤으로 선택하여 풀이하며 모의고사에 대비한 감각을 익힙니다.</p>
+                <div class="gorilla-card card-green">
+                    <div>
+                        <div class="g-badge">🕒 Level 3</div>
+                        <div class="g-title">실시간 기출풀이</div>
+                        <div class="g-subtitle">종합 100제</div>
+                        <div class="g-btn">보러가기</div>
+                    </div>
+                    <div class="g-bg-icon">📑</div>
                 </div>
-                <div class="guide-card">
-                    <div class="guide-icon">⏳</div>
-                    <div class="guide-title">4. 실전 모의고사</div>
-                    <p class="guide-desc">실제 시험장과 동일한 환경으로 100문제를 시간 내에 응시하고, 성적 추이와 취약 과목을 분석받습니다.</p>
+                <div class="gorilla-card card-yellow">
+                    <div>
+                        <div class="g-badge">🕒 Level 4</div>
+                        <div class="g-title">합격 당락 결정</div>
+                        <div class="g-subtitle">실전 모의고사</div>
+                        <div class="g-btn">보러가기</div>
+                    </div>
+                    <div class="g-bg-icon">⏳</div>
                 </div>
             </div>
             """, unsafe_allow_html=True)
