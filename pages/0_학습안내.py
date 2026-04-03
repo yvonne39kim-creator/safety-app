@@ -151,9 +151,15 @@ def main():
         
         if history_df.empty:
             st.markdown("""
+            <style>
+                /* 링크 이동 시 파란 줄 방지 */
+                .gorilla-card { text-decoration: none !important; }
+                .gorilla-card:visited { color: inherit; }
+                .gorilla-card:active { transform: translateY(0) scale(0.98); }
+            </style>
             <div class="section-title">학습 가이드차트</div>
             <div class="gorilla-container">
-                <div class="gorilla-card card-orange">
+                <a href="단계별_학습" target="_self" class="gorilla-card card-orange">
                     <div>
                         <div class="g-badge">🕒 Level 1</div>
                         <div class="g-title">기초를 탄탄하게</div>
@@ -161,8 +167,8 @@ def main():
                         <div class="g-btn">보러가기</div>
                     </div>
                     <div class="g-bg-icon">📚</div>
-                </div>
-                <div class="gorilla-card card-mint">
+                </a>
+                <a href="단원별_기출문제" target="_self" class="gorilla-card card-mint">
                     <div>
                         <div class="g-badge">🕒 Level 2</div>
                         <div class="g-title">개념 완벽 흡수</div>
@@ -170,8 +176,8 @@ def main():
                         <div class="g-btn">보러가기</div>
                     </div>
                     <div class="g-bg-icon">🎯</div>
-                </div>
-                <div class="gorilla-card card-green">
+                </a>
+                <a href="종합_기출문제" target="_self" class="gorilla-card card-green">
                     <div>
                         <div class="g-badge">🕒 Level 3</div>
                         <div class="g-title">실시간 기출풀이</div>
@@ -179,8 +185,8 @@ def main():
                         <div class="g-btn">보러가기</div>
                     </div>
                     <div class="g-bg-icon">📑</div>
-                </div>
-                <div class="gorilla-card card-yellow">
+                </a>
+                <a href="실전_모의고사" target="_self" class="gorilla-card card-yellow">
                     <div>
                         <div class="g-badge">🕒 Level 4</div>
                         <div class="g-title">합격 당락 결정</div>
@@ -188,7 +194,7 @@ def main():
                         <div class="g-btn">보러가기</div>
                     </div>
                     <div class="g-bg-icon">⏳</div>
-                </div>
+                </a>
             </div>
             """, unsafe_allow_html=True)
             
